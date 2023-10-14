@@ -8,6 +8,8 @@ Alternatives: [Mitm](https://mitmproxy.org/)
 ## How to use
 
  1. Download and start http_proxy.py
- 2. Proxy port is 8881 by default
- 3. Configure your network client to use HTTP proxy and the CA from `cert.pem`
+    - Proxy port is 8881 by default
+  
+ 2. Configure your network client to use HTTP proxy and the CA from `cert.pem`
+    - Run test.py to check if everithing is ok
 
