@@ -1,25 +1,27 @@
 import socket
 import ssl
+import httpx
+import dns.message
+import dns.query
+import dns.rdatatype
 
-
-def new_connect(domain):
+def new_connect(domain, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Custom nameserver usage
-    try:
-        from dns import resolver
+    ip = ""
 
-        dns = resolver.Resolver()
-        # dns.nameservers = ["127.0.0.1"]
-        # dns.nameserver_ports = {"127.0.0.1": 5332}
+    with httpx.Client() as client:
+        msg = dns.message.make_query(domain, "A")
+        res = dns.query.https(msg, "https://doh.seby.io/dns-query", session=httpx.Client())
 
-        domain = dns.resolve(domain, 'A')[0].address
-    except:
-        pass
+        for answer in res.answer:
+            if answer.rdtype == dns.rdatatype.A:
+                ip = answer[0].address
 
-    ctx = ssl.SSLContext()
-    sock = ctx.wrap_socket(sock)
+    if port == 443:
+        ctx = ssl.SSLContext()
+        sock = ctx.wrap_socket(sock, server_hostname='google.com')
 
-    sock.connect((domain, 443))
+    sock.connect((domain, port))
 
     return sock

@@ -2,6 +2,8 @@ import socket
 import threading
 import ssl_local_server
 import create_ca
+from urllib.parse import urlparse
+import ssl
 
 port = 8881
 
@@ -12,27 +14,27 @@ def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind(('127.0.0.1', port))
-    server.listen(10)
+    server.listen()
 
     print('Running on', port)
 
     while True:
         conn, _ = server.accept()
-        data = conn.recv(8192)
+        params = conn.recv(8192).decode().split(" ")
 
-        first_line = data.split(b"\n")[0]
-        try:
-            target = first_line.split()[1]
-        except Exception as e:
-            print("ERROR", e)
+        target = params[1]
+
+        if params[0] != "CONNECT":
+            conn.close()
             continue
 
-        host, _ = target.split(b":")
+        host, target_port = target.split(":")
 
         conn.send(b'HTTP/1.1 200 OK\n\n')
 
         threading.Thread(target=ssl_local_server.new_conn,
-                         args=(conn, host.decode(),)).start()
+                         args=(conn, host, int(target_port),)).start()
+
 
 
 if __name__ == "__main__":

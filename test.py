@@ -24,7 +24,7 @@ def test(host, path="/", body=True):
 
     c.close()
 
-
+test('rr5---sn-gvnuxaxjvh-n8ml.googlevideo.com', body=False)
 test("api.bigdatacloud.net", '/data/client-ip')
 test("ifconfig.me")
 test('www.google.com', body=False)

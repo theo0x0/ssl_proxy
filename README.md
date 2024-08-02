@@ -1,11 +1,18 @@
 # SSL proxy
 Proxying all SSL traffic through a local proxy
 
-Every connection is customizable
+Makes possible to customize outgoing connection
 
 Alternatives: [Mitm](https://mitmproxy.org/)
 
+
+## Requirements
+`pip install h2 httpx dnspython`
+
 ## How to use
+Known bugs: 
+- Firefox browers doesn't allow custom certificates for domains like google.com
+- Todo: http connections doesn't work
 
  1. Download and start http_proxy.py
     - Proxy port is 8881 by default
