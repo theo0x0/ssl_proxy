@@ -3,7 +3,7 @@ Proxying all SSL traffic through a local proxy
 
 Makes possible to customize outgoing connection
 
-Alternatives: [Mitm](https://mitmproxy.org/)
+Alternatives: [Mitm](https://mitmproxy.org/), [PowerTunnel](https://github.com/krlvm/PowerTunnel)
 
 
 ## Requirements
